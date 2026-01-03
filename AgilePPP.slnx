@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="GeneratePrimes/GeneratePrimes.csproj" />
+  <Project Path="TestPrimeGenerator/TestPrimeGenerator.csproj" />
+</Solution>
