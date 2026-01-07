@@ -24,7 +24,6 @@ namespace TestBowlingGame
             g.add(5);
             g.add(4);
             Assert.Equal(9, g.score());
-            Assert.Equal(2, g.getCurrentFrame());
         }
 
         [Fact]
@@ -37,7 +36,6 @@ namespace TestBowlingGame
             Assert.Equal(18, g.score());
             Assert.Equal(9, g.scoreForFrame(1));
             Assert.Equal(18, g.scoreForFrame(2));
-            Assert.Equal(3, g.getCurrentFrame());
         }
 
         [Fact]
@@ -47,7 +45,6 @@ namespace TestBowlingGame
             g.add(7);
             g.add(3);
             Assert.Equal(13, g.scoreForFrame(1));
-            Assert.Equal(2, g.getCurrentFrame());
         }
 
         [Fact]
@@ -60,7 +57,6 @@ namespace TestBowlingGame
             Assert.Equal(13, g.scoreForFrame(1));
             Assert.Equal(18, g.scoreForFrame(2));
             Assert.Equal(18, g.score());
-            Assert.Equal(3, g.getCurrentFrame());
         }
 
         [Fact]
@@ -69,7 +65,6 @@ namespace TestBowlingGame
             g.add(5);
             g.add(4);
             Assert.Equal(9, g.score());
-            Assert.Equal(2, g.getCurrentFrame());
         }
 
         [Fact]
@@ -80,7 +75,16 @@ namespace TestBowlingGame
             g.add(6);
             Assert.Equal(19, g.scoreForFrame(1));
             Assert.Equal(28, g.score());
-            Assert.Equal(3, g.getCurrentFrame());
+        }
+
+        [Fact]
+        public void testPerfectGame()
+        {
+            for (int i=0; i < 12; i++)
+            {
+                g.add(10);
+            }
+            Assert.Equal(300, g.score());
         }
     }
 }

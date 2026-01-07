@@ -2,82 +2,61 @@
 {
     public class Game
     {
-        //private int _itsScore;
-        private int[] _itsThrows;
-        private int _itsCurrentThrow;
-        private int _itsCurrentFrame;
-        private bool _firstThrow;
-        
+        private int itsCurrentFrame;
+        private bool firstThrowInFrame;
+        private Scorer itsScorer;
+
         public Game() 
         {
-            //_itsScore = 0;
-            _itsThrows = new int[21];
-            _itsCurrentThrow = 0;
-            _itsCurrentFrame = 1;
-            _firstThrow = true;
+            itsCurrentFrame = 1;
+            firstThrowInFrame = true;
+            itsScorer = new Scorer();
         }
 
         
 
         public int score()
         {
-            return scoreForFrame(getCurrentFrame() - 1); 
+            return scoreForFrame(itsCurrentFrame); 
         }
 
         public void add(int pins)
         {
-            //_itsScore += pins;
-            _itsThrows[_itsCurrentThrow++] = pins;
+            itsScorer.addThrow(pins);
             adjustCurrentFrame(pins);
         }
 
         private void adjustCurrentFrame(int pins)
         {
-            if (_firstThrow)
+            if (lastBallInFrame(pins))
             {
-                if (pins == 10)
-                    _itsCurrentFrame++;
-                else
-                    _firstThrow = false;
+                advanceFrame();
             }
             else
             {
-                _firstThrow = true;
-                _itsCurrentFrame++;
+                firstThrowInFrame = false;
             }
+        }
+
+        private bool lastBallInFrame(int pins)
+        {
+            return strike(pins) || (!firstThrowInFrame);
+        }
+
+        private bool strike(int pins)
+        {
+            return (firstThrowInFrame && pins == 10);
+        }
+
+        private void advanceFrame()
+        {
+            itsCurrentFrame = Math.Min(10, itsCurrentFrame+1);
         }
 
         public int scoreForFrame(int theFrame)
         {
-            int score = 0;
-            int ball = 0;
-            for (int currentFrame = 0; 
-                currentFrame < theFrame; 
-                currentFrame++)
-            {
-                int firstThrow = _itsThrows[ball++];
-                if (firstThrow == 10)
-                {
-                    score += firstThrow + _itsThrows[ball] + _itsThrows[ball + 1];
-                }
-                else
-                {
-                    int secondThrow = _itsThrows[ball++];
-                    int framescore = firstThrow + secondThrow;
-
-                    if (framescore == 10)   //spare
-                        score += framescore + _itsThrows[ball];
-                    else
-                        score += framescore;
-                }
-            }
-
-            return score;
+            return itsScorer.scoreForFrame(theFrame);
         }
 
-        public int getCurrentFrame()
-        {
-            return _itsCurrentFrame;
-        }
     }
 }
