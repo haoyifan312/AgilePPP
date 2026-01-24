@@ -1,6 +1,8 @@
 <Solution>
   <Project Path="BowlingGame/BowlingGame.csproj" Id="e7646309-98e6-481f-9c16-455d5c3e03b6" />
   <Project Path="GeneratePrimes/GeneratePrimes.csproj" />
+  <Project Path="Payroll/Payroll.csproj" Id="e846ea28-25d0-40db-bbeb-b0857c33022d" />
   <Project Path="TestBowlingGame/TestBowlingGame.csproj" Id="3af6a234-43ca-4cbe-8ecb-752da952d372" />
+  <Project Path="TestPayroll/TestPayroll.csproj" Id="6cc3d652-16d0-4685-bc23-551ce2a47c4d" />
   <Project Path="TestPrimeGenerator/TestPrimeGenerator.csproj" />
 </Solution>
