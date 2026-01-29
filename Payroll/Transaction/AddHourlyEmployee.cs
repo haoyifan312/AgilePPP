@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Payroll
+namespace Payroll.Transaction
 {
     internal class AddHourlyEmployee: AddEmployeeTransaction
     {

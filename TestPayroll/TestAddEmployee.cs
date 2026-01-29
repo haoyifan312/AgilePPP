@@ -12,7 +12,8 @@ namespace TestPayroll
             var t = new AddSalariedEmployee(empId, "Bob", "Home", 1000.0);
             t.Execute();
 
-            Employee e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
             Assert.Equal("Bob", e.Name);
 
             Assert.True(e.ItsClassification is SalariedClassification);
@@ -31,7 +32,8 @@ namespace TestPayroll
             var t = new AddHourlyEmployee(empId, "John", "Smith Street", 80.0);            
             t.Execute();
 
-            Employee e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
             Assert.Equal("John", e.Name);
 
             Assert.True(e.ItsClassification is HourlyClassification);
@@ -50,7 +52,8 @@ namespace TestPayroll
             var t = new AddCommissionedEmployee(empId, "Will", "1st ave", 800.0, 0.02);
             t.Execute();
 
-            Employee e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
             Assert.Equal("Will", e.Name);
 
             Assert.True(e.ItsClassification is CommissionedClassification);

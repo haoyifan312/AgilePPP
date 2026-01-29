@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Payroll
+namespace Payroll.Transaction
 {
     internal class AddCommissionedEmployee: AddEmployeeTransaction
     {
         private double _salary;
         private double _commissionRate;
 
-        public AddCommissionedEmployee(int empid, string address, string name, 
+        public AddCommissionedEmployee(int empid, string name, string address, 
             double salary, double commisionRate) : 
-            base(empid, address, name)
+            base(empid, name, address)
         {
             _salary = salary;
             _commissionRate = commisionRate;
