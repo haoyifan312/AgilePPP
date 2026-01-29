@@ -13,7 +13,7 @@ namespace Payroll.Transaction
         protected abstract Classification GetClassification();
         protected abstract Schedule GetSchedule();
 
-        public AddEmployeeTransaction(int empid, string address, string name)
+        public AddEmployeeTransaction(int empid, string name, string address)
         {
             _empId = empid;
             _address = address;

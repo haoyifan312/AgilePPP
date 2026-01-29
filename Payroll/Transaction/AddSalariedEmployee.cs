@@ -9,8 +9,9 @@ namespace Payroll.Transaction
     {
         private double _salary;
 
+
         public AddSalariedEmployee(int empId, string name, string address, double salary):
-            base(empId, address, name)
+            base(empId, name, address)
         {
             _salary = salary;
         }
