@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Payroll.Transaction
+namespace Payroll
 {
     internal class AddSalariedEmployee : AddEmployeeTransaction
     {

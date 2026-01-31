@@ -6,6 +6,8 @@ namespace Payroll
 {
     internal class CommissionedClassification: Classification
     {
+        private Dictionary<int, SalesReceipt> _receipts;
+
         public double Salary { set; get; }
         public double CommissionRate { set; get; }
 
@@ -13,6 +15,17 @@ namespace Payroll
         {
             Salary = salary;
             CommissionRate = commissionRate;
+            _receipts = new Dictionary<int, SalesReceipt>();
+        }
+
+        public void AddSalesReceipt(SalesReceipt salesReceipt)
+        {
+            _receipts.Add(salesReceipt.Date, salesReceipt);
+        }
+
+        public SalesReceipt GetSalesReceipt(int date)
+        {
+            return _receipts[date]; 
         }
     }
 }

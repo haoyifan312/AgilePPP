@@ -1,9 +1,8 @@
-﻿using Payroll.Transaction;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Payroll.Transaction
+namespace Payroll
 {
     internal class AddHourlyEmployee: AddEmployeeTransaction
     {

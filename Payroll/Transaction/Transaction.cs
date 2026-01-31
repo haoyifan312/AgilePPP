@@ -1,4 +1,4 @@
-﻿namespace Payroll.Transaction
+﻿namespace Payroll
 {
     public interface Transaction
     {

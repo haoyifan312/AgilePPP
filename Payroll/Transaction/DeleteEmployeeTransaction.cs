@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Payroll.Transaction
+namespace Payroll
 {
     internal class DeleteEmployeeTransaction: Transaction
     {
         private int _empId;
 
-        public DeleteEmployeeTransaction(int empId):
-            base()
+        public DeleteEmployeeTransaction(int empId)
         {
             _empId = empId;
         }

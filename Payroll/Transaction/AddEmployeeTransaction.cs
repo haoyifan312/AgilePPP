@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Payroll.Transaction
+namespace Payroll
 {
     abstract class AddEmployeeTransaction : Transaction
     {
