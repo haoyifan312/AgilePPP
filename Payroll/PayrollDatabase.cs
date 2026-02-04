@@ -10,10 +10,12 @@ namespace Payroll
     {
         static private PayrollDatabase _instance = new PayrollDatabase();
         private Dictionary<int, Employee> _employees;
+        private Dictionary<int, Employee> _unionMembers;
 
         private PayrollDatabase()
         {
             _employees = new Dictionary<int, Employee>();
+            _unionMembers = new Dictionary<int, Employee>();
         }
 
         public static PayrollDatabase GetInstance()
@@ -38,6 +40,16 @@ namespace Payroll
         public void DeleteEmployee(int empId)
         {
             _employees.Remove(empId);
+        }
+
+        public void AddUnionMember(int memberId, Employee employee)
+        {
+            _unionMembers.Add(memberId, employee);
+        }
+
+        public Employee? GetUnionMember(int memberId)
+        {
+            return _unionMembers[memberId];
         }
     }
 }

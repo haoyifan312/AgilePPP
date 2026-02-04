@@ -111,7 +111,7 @@ namespace TestPayroll
         }
 
         [Fact]
-        public void TestSalesReceiptTransactionImpl()
+        public void TestSalesReceiptTransaction()
         {
             int empId = 6;
             var t = new AddCommissionedEmployee(empId, "Carl", "Home", 3000, 10);
@@ -132,6 +132,29 @@ namespace TestPayroll
             SalesReceipt sr = cc.GetSalesReceipt(20260130);
 
             Assert.Equal(120, sr.Amount);
+        }
+
+        [Fact]
+        public void TestAddServiceCharge()
+        {
+            int empId = 7;
+            var t = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            t.Execute();
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            var ua = new UnionAffiliation(12.5);
+            e.ItsAffiliation = ua;
+
+            int memberId = 86;
+            PayrollDatabase.GetInstance().AddUnionMember(memberId, e);
+            ServiceChargeTransaction sct = new ServiceChargeTransaction(memberId, 20011101, 12.95);
+            sct.Execute();
+
+            ServiceCharge? sc = ua.GetServiceCharge(20011101);
+            Assert.NotNull(sc);
+            Assert.Equal(12.95, sc.Amount);
+
         }
     }
 }

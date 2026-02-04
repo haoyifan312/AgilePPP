@@ -9,6 +9,8 @@ namespace Payroll
         public string Name { get; private set; }
         public string Address { get; private set; }
 
+        public Affiliation ItsAffiliation { get; set; }
+
         public Classification? ItsClassification { get; set; }
         public Schedule? ItsSchedule { get; set; }
         public PaymentMethod? ItsPaymentMethod{ get; set;}
@@ -17,8 +19,7 @@ namespace Payroll
         {
             Name = name;
             Address = address;
+            ItsAffiliation = new NoAffiliation();
         }
-
-
     }
 }
