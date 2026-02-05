@@ -156,5 +156,111 @@ namespace TestPayroll
             Assert.Equal(12.95, sc.Amount);
 
         }
+
+        [Fact]
+        public void TestChangeNameTransaction()
+        {
+            int empId = 8;
+            var ahe = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            ahe.Execute();
+
+            var cnt = new ChangeNameTransaction(empId, "Bob");
+            cnt.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+            Assert.Equal("Bob", e.Name);
+        }
+
+        [Fact]
+        public void TestChangeAddressTransaction()
+        {
+            int empId = 9;
+            var ahe = new AddSalariedEmployee(empId, "Bill", "Home", 15.25);
+            ahe.Execute();
+
+            var cnt = new ChangeAddressTransaction(empId, "Street");
+            cnt.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+            Assert.Equal("Street", e.Address);
+        }
+
+        [Fact]
+        public void TestChangeHourlyTransaction()
+        {
+            int empId = 10;
+            var act = new AddCommissionedEmployee(empId, "Lance", "home", 2500, 3.2);
+            act.Execute();
+
+            var cht = new ChangeHourlyTransaction(empId, 27.25);
+            cht.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            Classification? c = e.ItsClassification;
+            Assert.NotNull(c);
+            var hc = (HourlyClassification)c;
+            Assert.NotNull(hc);
+            Assert.Equal(27.25, hc.HourlyRate);
+
+            Schedule? s = e.ItsSchedule;
+            Assert.NotNull(s);
+            var ws = (WeeklySchedule)s;
+            Assert.NotNull(ws);
+        }
+
+        [Fact]
+        public void TestChangeSalariedTransaction()
+        {
+            int empId = 11;
+            var act = new AddCommissionedEmployee(empId, "Lance", "home", 2500, 3.2);
+            act.Execute();
+
+            var cst = new ChangeSalariedTransaction(empId, 2725);
+            cst.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            Classification? c = e.ItsClassification;
+            Assert.NotNull(c);
+            var sc = (SalariedClassification)c;
+            Assert.NotNull(sc);
+            Assert.Equal(2725, sc.Salary);
+
+            Schedule? s = e.ItsSchedule;
+            Assert.NotNull(s);
+            var ms = (MonthlySchedule)s;
+            Assert.NotNull(ms);
+        }
+
+        [Fact]
+        public void TestChangeCommissionedTransaction()
+        {
+            int empId = 12;
+            var act = new AddSalariedEmployee(empId, "Lance", "home", 2500);
+            act.Execute();
+
+            var cst = new ChangeCommissionedTransaction(empId, 2725, 1.2);
+            cst.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            Classification? c = e.ItsClassification;
+            Assert.NotNull(c);
+            var cc = (CommissionedClassification)c;
+            Assert.NotNull(cc);
+            Assert.Equal(2725, cc.Salary);
+            Assert.Equal(1.2, cc.CommissionRate);
+
+            Schedule? s = e.ItsSchedule;
+            Assert.NotNull(s);
+            var bws = (BiweeklySchedule)s;
+            Assert.NotNull(bws);
+        }
     }
 }
