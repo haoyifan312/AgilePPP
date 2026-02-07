@@ -51,5 +51,10 @@ namespace Payroll
         {
             return _unionMembers[memberId];
         }
+
+        public void DeleteUnionMember(int memberId)
+        {
+            _unionMembers.Remove(memberId);
+        }
     }
 }

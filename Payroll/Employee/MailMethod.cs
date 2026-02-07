@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Payroll
 {
-    internal class HoldMethod : PaymentMethod
+    internal class MailMethod : PaymentMethod
     {
         public string Address { get; set; }
 
-        public HoldMethod(string address)
+        public MailMethod(string address)
         {
             Address = address;
         }

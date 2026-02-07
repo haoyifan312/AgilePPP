@@ -37,7 +37,7 @@ namespace Payroll
 
         virtual protected PaymentMethod GetPaymentMethod()
         {
-            return new HoldMethod();
+            return new HoldMethod(_address);
         }
     }
 }

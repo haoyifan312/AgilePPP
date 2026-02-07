@@ -142,11 +142,10 @@ namespace TestPayroll
             t.Execute();
             Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
             Assert.NotNull(e);
-
-            var ua = new UnionAffiliation(12.5);
+            int memberId = 86;
+            var ua = new UnionAffiliation(12.5, memberId);
             e.ItsAffiliation = ua;
 
-            int memberId = 86;
             PayrollDatabase.GetInstance().AddUnionMember(memberId, e);
             ServiceChargeTransaction sct = new ServiceChargeTransaction(memberId, 20011101, 12.95);
             sct.Execute();
@@ -261,6 +260,105 @@ namespace TestPayroll
             Assert.NotNull(s);
             var bws = (BiweeklySchedule)s;
             Assert.NotNull(bws);
+        }
+
+        [Fact]
+        public void TestChangeDirectTransaction()
+        {
+            int empId = 13;
+            var act = new AddSalariedEmployee(empId, "Lance", "home", 2500);
+            act.Execute();
+
+            var cst = new ChangeDirectTransaction(empId, "BoA", 12345);
+            cst.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            PaymentMethod? pm = e.ItsPaymentMethod;
+            Assert.NotNull(pm);
+            var dm = (DirectMethod)pm;
+            Assert.NotNull(dm);
+            Assert.Equal("BoA", dm.Bank);
+            Assert.Equal(12345, dm.Account);
+        }
+
+        [Fact]
+        public void TestChangeMailTransaction()
+        {
+            int empId = 14;
+            var act = new AddSalariedEmployee(empId, "Lance", "home", 2500);
+            act.Execute();
+
+            var cst = new ChangeMailTransaction(empId, "home");
+            cst.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            PaymentMethod? pm = e.ItsPaymentMethod;
+            Assert.NotNull(pm);
+            var mm = (MailMethod)pm;
+            Assert.NotNull(mm);
+            Assert.Equal("home", mm.Address);
+        }
+
+        [Fact]
+        public void TestChangeHoldTransaction()
+        {
+            int empId = 15;
+            var act = new AddSalariedEmployee(empId, "Lance", "home", 2500);
+            act.Execute();
+
+            var cst = new ChangeHoldTransaction(empId, "home");
+            cst.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            PaymentMethod? pm = e.ItsPaymentMethod;
+            Assert.NotNull(pm);
+            var hm = (HoldMethod)pm;
+            Assert.NotNull(hm);
+            Assert.Equal("home", hm.Address);
+        }
+
+        [Fact]
+        public void TestChangeMemberTransaction()
+        {
+            int empId = 16;
+            int memberId = 7734;
+            var ahe = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            ahe.Execute();
+
+            var cmt = new ChangeMemberTransaction(empId, memberId, 99.42);
+            cmt.Execute();
+
+            Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e);
+
+            Affiliation af = e.ItsAffiliation;
+            Assert.NotNull(af);
+            UnionAffiliation ua = (UnionAffiliation)af;
+            Assert.NotNull(ua);
+            Assert.Equal(99.42, ua.Dues);
+            Assert.Equal(memberId, ua.MemberId);
+
+            Employee? m = PayrollDatabase.GetInstance().GetUnionMember(memberId);
+            Assert.NotNull(m);
+            Assert.Equal(m, e);
+
+            var cut = new ChangeUnaffiliatedTransaction(empId);
+            cut.Execute();
+            Employee? e2 = PayrollDatabase.GetInstance().GetEmployee(empId);
+            Assert.NotNull(e2);
+
+            Affiliation af2 = e2.ItsAffiliation;
+            Assert.NotNull(af2);
+            NoAffiliation na = (NoAffiliation)af2;
+            Assert.NotNull(ua);
+
+            Assert.Throws<System.Collections.Generic.KeyNotFoundException> (() => PayrollDatabase.GetInstance().GetUnionMember(memberId));
         }
     }
 }

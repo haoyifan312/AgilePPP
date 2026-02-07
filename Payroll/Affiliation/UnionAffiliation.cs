@@ -7,12 +7,14 @@ namespace Payroll
     internal class UnionAffiliation: Affiliation
     {
         public double Dues {  get; set; }
+        public int MemberId { get; set; }
 
         private Dictionary<int, ServiceCharge> _serviceCharges;
 
-        public UnionAffiliation(double dues) 
+        public UnionAffiliation(double dues, int memberId)
         {
             Dues = dues;
+            MemberId = memberId;
             _serviceCharges = new Dictionary<int, ServiceCharge>();
         }
 
