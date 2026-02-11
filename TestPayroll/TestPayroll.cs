@@ -360,5 +360,38 @@ namespace TestPayroll
 
             Assert.Throws<System.Collections.Generic.KeyNotFoundException> (() => PayrollDatabase.GetInstance().GetUnionMember(memberId));
         }
+
+        [Fact]
+        public void TestPaySingleSalariedEmployee()
+        {
+            int empId = 17;
+            var ase = new AddSalariedEmployee(empId, "Bob", "Home", 1000.0);
+            ase.Execute();
+
+            var payDate = new DateOnly(2001, 11, 30);
+            var pt = new PaydayTransaction(payDate);
+            pt.Execute();
+
+            PayCheck pc = pt.GetPaycheck(empId);
+            Assert.NotNull(pc);
+            Assert.Equal(1000.0, pc.GrossPay);
+            Assert.Equal(1000.0, pc.NetPay);
+            Assert.Equal(0.0, pc.Deductions);
+        }
+
+        [Fact]
+        public void TestPaySingleSalariedEmployeeOnWrongDate()
+        {
+            int empId = 18;
+            var ase = new AddSalariedEmployee(empId, "Bob", "Home", 1000.0);
+            ase.Execute();
+
+            var payDate = new DateOnly(2001, 11, 29);
+            var pt = new PaydayTransaction(payDate);
+            pt.Execute();
+
+            PayCheck pc = pt.GetPaycheck(empId);
+            Assert.Null(pc);
+        }
     }
 }

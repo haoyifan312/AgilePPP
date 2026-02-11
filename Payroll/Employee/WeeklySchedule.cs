@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Payroll
 {
-    internal class WeeklySchedule: Schedule
+    internal class WeeklySchedule : Schedule
     {
+        public bool IsPayDay(DateOnly date)
+        {
+            return false;
+        }
     }
 }

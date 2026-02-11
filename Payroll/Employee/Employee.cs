@@ -15,11 +15,29 @@ namespace Payroll
         public Schedule? ItsSchedule { get; set; }
         public PaymentMethod? ItsPaymentMethod{ get; set;}
 
+
         public Employee(string name, string address) 
         {
             Name = name;
             Address = address;
             ItsAffiliation = new NoAffiliation();
+        }
+
+        public bool IsPayDay(DateOnly date)
+        {
+            if (null == ItsSchedule)
+                throw new Exception($"Schedule for {Name} is not setup");
+            return ItsSchedule.IsPayDay(date);
+        }
+
+        internal void Payday(PayCheck pc)
+        {
+            if (null == ItsClassification)
+                throw new Exception($"Classification for {Name} is not setup");
+            double grossPay = ItsClassification.CalculatePay(pc);
+            double deductions = ItsAffiliation.CalculateDeductions(pc);
+            pc.GrossPay = grossPay;
+            pc.Deductions = deductions;
         }
     }
 }

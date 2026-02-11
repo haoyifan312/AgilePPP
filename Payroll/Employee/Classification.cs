@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Payroll
 {
-    internal class Classification
+    internal interface Classification
     {
+        internal double CalculatePay(PayCheck pc);
     }
 }

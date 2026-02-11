@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Payroll;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
-
-using Payroll;
 
 namespace Payroll
 {
@@ -11,6 +11,7 @@ namespace Payroll
         static private PayrollDatabase _instance = new PayrollDatabase();
         private Dictionary<int, Employee> _employees;
         private Dictionary<int, Employee> _unionMembers;
+        public ReadOnlyDictionary<int, Employee> Employees => new(_employees);
 
         private PayrollDatabase()
         {

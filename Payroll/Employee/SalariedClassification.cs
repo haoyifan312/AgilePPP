@@ -11,5 +11,10 @@ namespace Payroll
         {
             Salary = salary;
         }
+
+        double Classification.CalculatePay(PayCheck pc)
+        {
+            return Salary;
+        }
     }
 }

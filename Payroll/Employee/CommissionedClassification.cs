@@ -27,5 +27,10 @@ namespace Payroll
         {
             return _receipts[date]; 
         }
+
+        double Classification.CalculatePay(PayCheck pc)
+        {
+            return 0.0;
+        }
     }
 }

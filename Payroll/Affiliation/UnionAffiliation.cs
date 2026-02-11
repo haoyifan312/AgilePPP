@@ -27,5 +27,10 @@ namespace Payroll
         {
             return _serviceCharges[date]; 
         }
+
+        double Affiliation.CalculateDeductions(PayCheck pc)
+        {
+            return Dues;
+        }
     }
 }

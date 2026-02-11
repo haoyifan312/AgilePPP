@@ -6,7 +6,7 @@ using Payroll;
 
 namespace Payroll
 {
-    internal class HourlyClassification: Classification
+    internal class HourlyClassification : Classification
     {
         private Dictionary<int, TimeCard> _timeCards;
 
@@ -26,6 +26,11 @@ namespace Payroll
         public TimeCard GetTimeCard(int date)
         {
             return _timeCards[date]; 
+        }
+
+        double Classification.CalculatePay(PayCheck pc)
+        {
+            throw new NotImplementedException();
         }
     }
 }

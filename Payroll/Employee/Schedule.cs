@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Payroll
 {
-    internal class Schedule
+    internal interface Schedule
     {
+        public bool IsPayDay(DateOnly date);
     }
 }
