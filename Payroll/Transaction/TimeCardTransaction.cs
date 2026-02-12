@@ -6,10 +6,10 @@ namespace Payroll
 {
     struct TimeCard
     {
-        public int Date;
+        public DateOnly Date;
         public double Hours;
 
-        public TimeCard(int date, double hours)
+        public TimeCard(DateOnly date, double hours)
         {
             Date = date;
             Hours = hours;
@@ -18,11 +18,11 @@ namespace Payroll
 
     internal class TimeCardTransaction: Transaction
     {
-        public int Date { get; set; }
+        public DateOnly Date { get; set; }
         public double Hours { get; set; }
         public int EmpId { get; set; }
 
-        public TimeCardTransaction(int date, double hours, int empId)
+        public TimeCardTransaction(DateOnly date, double hours, int empId)
         {
             Date = date;
             Hours = hours;

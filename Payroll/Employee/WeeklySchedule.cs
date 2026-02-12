@@ -8,7 +8,7 @@ namespace Payroll
     {
         public bool IsPayDay(DateOnly date)
         {
-            return false;
+            return date.DayOfWeek == DayOfWeek.Friday;
         }
     }
 }

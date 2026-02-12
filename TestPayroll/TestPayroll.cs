@@ -95,7 +95,7 @@ namespace TestPayroll
             var t = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
             t.Execute();
 
-            var tct = new TimeCardTransaction(20011031, 8.0, empId);
+            var tct = new TimeCardTransaction(new DateOnly(2001, 10, 31), 8.0, empId);
             tct.Execute();
 
             Employee? e = PayrollDatabase.GetInstance().GetEmployee(empId);
@@ -106,7 +106,7 @@ namespace TestPayroll
             var hpc = (HourlyClassification)pc;
             Assert.NotNull(hpc);
 
-            TimeCard tc = hpc.GetTimeCard(20011031);
+            TimeCard tc = hpc.GetTimeCard(new DateOnly(2001, 10, 31));
             Assert.Equal(8.0, tc.Hours);
         }
 
@@ -372,7 +372,7 @@ namespace TestPayroll
             var pt = new PaydayTransaction(payDate);
             pt.Execute();
 
-            PayCheck pc = pt.GetPaycheck(empId);
+            PayCheck? pc = pt.GetPaycheck(empId);
             Assert.NotNull(pc);
             Assert.Equal(1000.0, pc.GrossPay);
             Assert.Equal(1000.0, pc.NetPay);
@@ -390,8 +390,82 @@ namespace TestPayroll
             var pt = new PaydayTransaction(payDate);
             pt.Execute();
 
-            PayCheck pc = pt.GetPaycheck(empId);
+            PayCheck? pc = pt.GetPaycheck(empId);
             Assert.Null(pc);
         }
+
+        [Fact]
+        public void TestPaySingleHourlyEmployeeNoTimeCards()
+        {
+            int empId = 19;
+            var ahe = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            ahe.Execute();
+
+            DateOnly date = new DateOnly(2001, 11, 9);  // Friday
+            var pt = new PaydayTransaction(date);
+            pt.Execute();
+
+            ValidateHourlyPaycheck(pt, empId, date, 0.0);
+        }
+
+        void ValidateHourlyPaycheck(PaydayTransaction pt, int empId, DateOnly date, double pay)
+        {
+            PayCheck? pc = pt.GetPaycheck(empId);
+            Assert.NotNull(pc);
+            Assert.Equal(pay, pc.GrossPay);
+            Assert.Equal(0.0, pc.Deductions);
+            Assert.Equal(pay, pc.NetPay);
+        }
+
+        [Fact]
+        public void TestPaySingleHourlyEmployeeOneTimeCard()
+        {
+            int empId = 20;
+            var t = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            t.Execute();
+
+            DateOnly date = new DateOnly(2001, 11, 9); //Friday
+
+            var tct = new TimeCardTransaction(date, 2.0, empId);
+            tct.Execute();
+
+            var pt = new PaydayTransaction(date);
+            pt.Execute();
+            ValidateHourlyPaycheck(pt, empId, date, 30.5);
+        }
+
+        [Fact]
+        public void TestPaySingleHourlyEmployeeOvertimeOneTimeCard()
+        {
+            int empId = 21;
+            var t = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            t.Execute();
+
+            DateOnly date = new DateOnly(2001, 11, 9);  //Friday
+            var tct = new TimeCardTransaction(date, 9.0, empId);
+            tct.Execute();
+
+            var pt = new PaydayTransaction(date);
+            pt.Execute();
+            ValidateHourlyPaycheck(pt, empId, date, (8 + 1.5) * 15.25);
+        }
+
+        [Fact]
+        public void TestPaySingleHourlyEmployeeOnWrongDate()
+        {
+            int empId = 22;
+            var t = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            t.Execute();
+
+            DateOnly date = new DateOnly(2001, 11, 8);  //Thursday
+            var tct = new TimeCardTransaction(date, 9.0, empId);
+            tct.Execute();
+            var pt = new PaydayTransaction(date);
+            pt.Execute();
+
+            PayCheck? pc = pt.GetPaycheck(empId);
+            Assert.Null(pc);
+        }
+
     }
 }
